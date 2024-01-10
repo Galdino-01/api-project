@@ -1,0 +1,8 @@
+/node_modules
+/build
+/coverage
+
+.env
+*.sqlite
+
+tests/users/InserNewUser.test.ts
