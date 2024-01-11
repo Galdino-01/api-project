@@ -3,7 +3,7 @@ import { ISignUp } from "../../database/models";
 import { validation } from "../../shared/middlewares";
 import * as yup from 'yup';
 import { Request, Response } from "express";
-import { PublicProvides } from "../../database/providers";
+import { PublicProviders } from "../../database/providers";
 
 interface IBodyProps extends Omit<(ISignUp), 'id'> {
     login: string;
@@ -25,7 +25,8 @@ export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
 
     const { login, password, email, name } = req.body;
 
-    const result = await PublicProvides.SignUp({
+    // Insert new user
+    const result = await PublicProviders.SignUp({
         login,
         password,
         email,
@@ -41,5 +42,5 @@ export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
         })
     }
 
-    return res.status(StatusCodes.BAD_REQUEST).json(result)
+    return res.status(StatusCodes.CREATED).json('User created!')
 };

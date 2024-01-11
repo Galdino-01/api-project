@@ -28,7 +28,7 @@ router.post('/post', (req, res) => {
     // GET
 
     // POST
-    router.post('/sign-in')
+    router.post('/sign-in', PublicControllers.SignInValidation, PublicControllers.SignIn)
     router.post('/sign-up', PublicControllers.SignUpValidation, PublicControllers.SignUp)
 
 //  ...
