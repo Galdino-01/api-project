@@ -4,5 +4,3 @@
 
 .env
 *.sqlite
-
-tests/users/InserNewUser.test.ts
