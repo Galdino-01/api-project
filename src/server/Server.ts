@@ -22,11 +22,11 @@ server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof SyntaxError) {
         return res.status(400).json({
             errors: {
-                default: err.message
+                json: 'JSON malformed',
+                reason: err.message
             }
         })
     }
-    next();
 });
 
 export { server };
