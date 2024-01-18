@@ -2,30 +2,34 @@
 import { server } from './server/Server';
 import { Knex } from './server/database/knex';
 
+// Dotenv
 const PORT = process.env.PORT || 3000;
+
+// Logger
+import logger from './server/logger';
 
 const startServer = async () => {
     server.listen(PORT, () => {
-        console.log(`Server listening on port ${PORT}`);
+        logger.info(`Server listening on port ${PORT}`);
     });
 };
 
 if (process.env.IS_LOCALHOST !== 'true') {
-    console.log('Running in production mode');
+    logger.info('Running in production mode');
     
     Knex.migrate.latest()
         .then(() => {
 
             Knex.seed.run()
                 .then(() => {
-                    console.log('Database migrated');
+                    logger.info('Database migrated');
                     startServer();
                 })
-                .catch(console.log);
+                .catch(logger.info);
         })
-        .catch(console.log);
+        .catch(logger.info);
 
 } else {
-    console.log('Running in development mode');
+    logger.info('Running in development mode');
     startServer();
 }

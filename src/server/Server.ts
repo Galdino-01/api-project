@@ -8,7 +8,6 @@ import 'dotenv/config';
 // Server
 import { router } from './routes';
 
-
 const server = express();
 
 server.use(cors({
@@ -16,7 +15,6 @@ server.use(cors({
 }));
 
 server.use(express.json());
-server.use(router);
 
 server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof SyntaxError) {
@@ -28,5 +26,7 @@ server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
         })
     }
 });
+
+server.use(router);
 
 export { server };
