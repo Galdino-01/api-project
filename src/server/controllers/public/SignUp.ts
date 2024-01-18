@@ -1,11 +1,10 @@
 import { StatusCodes } from "http-status-codes";
-import { ISignUp } from "../../database/models";
 import { validation } from "../../shared/middlewares";
 import * as yup from 'yup';
 import { Request, Response } from "express";
 import { PublicProviders } from "../../database/providers";
 
-interface IBodyProps extends Omit<(ISignUp), 'id'> {
+interface IBodyProps {
     login: string;
     password: string;
     email: string;
@@ -25,7 +24,6 @@ export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
 
     const { login, password, email, name } = req.body;
 
-    // Insert new user
     const result = await PublicProviders.SignUp({
         login,
         password,

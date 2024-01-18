@@ -2,12 +2,11 @@ import { Request, Response } from 'express';
 import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
-import { ISignIn } from '../../database/models';
 import { PublicProviders } from '../../database/providers';
 import { JWTService, PasswordCrypto } from '../../shared/services';
 
 // Interfaces
-interface IBodyProps extends Omit<(ISignIn), 'id'> {
+interface IBodyProps {
     login: string;
     password: string;
 }
@@ -21,7 +20,9 @@ export const SignInValidation = validation((getSchema) => ({
 
 export const SignIn = async (req: Request<{}, {}, IBodyProps>, res: Response) => {
 
-    const verifyLogin = await PublicProviders.SignIn(req.body);
+    const { login, password } = req.body;
+
+    const verifyLogin = await PublicProviders.SignIn(login);
 
     if (verifyLogin instanceof Error) {
         return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -31,7 +32,7 @@ export const SignIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
         });
     }
 
-    const passwordMatch = await PasswordCrypto.verifyPassword(req.body.password, verifyLogin.user_pass);
+    const passwordMatch = await PasswordCrypto.verifyPassword(password, verifyLogin.user_pass);
 
     if (!passwordMatch) {
         return res.status(StatusCodes.UNAUTHORIZED).json({

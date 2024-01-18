@@ -1,22 +1,21 @@
 import { ETableNames } from "../../ETableNames";
-import { Knex } from "../../knex";
 import { IUsuario } from "../../models";
+import { Knex } from "../../knex";
 
-
-export const SignIn = async (login: String) => {
+export const UserById = async (id: number): Promise<IUsuario | Error> => {
 
     try {
         const resultUsers = await Knex(ETableNames.users)
         .select('*')
-        .where('user_login', '=', login.toUpperCase())
+        .where('id', '=', id)
         .first();
 
         if(resultUsers) return resultUsers;
 
-        return new Error ('Login or Password incorrect');
+        return new Error ('User not found in database');
         
     } catch (error) {
         console.log(error);
-        return new Error('Error in SignIn');
+        return new Error('Error in UserById');
     }
 }

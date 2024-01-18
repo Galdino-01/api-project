@@ -1,10 +1,10 @@
-import { ISignUp } from "../../models";
+import { IUsuario } from "../../models";
 import { ETableNames } from "../../ETableNames";
 import { Knex } from "../../knex";
 import { v4 as uuid } from 'uuid';
 import { PasswordCrypto } from "../../../shared/services";
 
-export const SignUp = async (signUp: Omit<ISignUp, 'id'>): Promise<number | Error> => {
+export const SignUp = async (signUp: Omit<IUsuario, 'id'>): Promise<number | Error> => {
 
     const userId = uuid();
     const userName = signUp.name;

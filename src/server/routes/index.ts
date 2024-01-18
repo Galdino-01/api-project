@@ -17,12 +17,6 @@ router.post('/post', (req, res) => {
     res.sendStatus(StatusCodes.OK).json(req.body);
 });
 
-// Users routes
-    // GET
-
-    // POST
-    
-//  ...
 
 // Public routes
     // GET
@@ -32,5 +26,15 @@ router.post('/post', (req, res) => {
     router.post('/sign-up', PublicControllers.SignUpValidation, PublicControllers.SignUp)
 
 //  ...
+
+// Users routes
+    // GET
+    router.get('/user-by-id', ensureAuthenticated, UsersControllers.UserByIdValidation, UsersControllers.UserById)
+    // POST
+    
+//  ...
+
+
+
 
 export { router };

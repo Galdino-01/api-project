@@ -1,2 +1,2 @@
-// Public routes
-export * from './public';
+// Users Models
+export * from './users';

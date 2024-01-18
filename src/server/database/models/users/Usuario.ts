@@ -1,4 +1,4 @@
-export interface ISignUp {
+export interface IUsuario {
     id: number;
     login: string;
     password: string;
