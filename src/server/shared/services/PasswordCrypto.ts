@@ -2,7 +2,7 @@ import { genSalt, hash, compare } from "bcryptjs";
 
 const PASSWORD_COMPLEXITY = parseInt(process.env.PASSWORD_COMPLEXITY || '8');
 
-const SALT_RANDOMS = PASSWORD_COMPLEXITY;
+const SALT_RANDOMS = PASSWORD_COMPLEXITY || 8;
 
 const hashPassword = async (password: string) => {
 

@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { validation } from '../../shared/middlewares';
 import { StatusCodes } from 'http-status-codes';
 import { PublicProviders } from '../../database/providers';
-import { JWTService, PasswordCrypto } from '../../shared/services';
+import { JWTService, Logger, PasswordCrypto } from '../../shared/services';
 
 // Interfaces
 interface IBodyProps {

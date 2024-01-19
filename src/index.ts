@@ -6,30 +6,30 @@ import { Knex } from './server/database/knex';
 const PORT = process.env.PORT || 3000;
 
 // Logger
-import logger from './server/logger';
+import { Logger } from './server/shared/services';
 
 const startServer = async () => {
     server.listen(PORT, () => {
-        logger.info(`Server listening on port ${PORT}`);
+        Logger.info(`Server listening on port ${PORT}`);
     });
 };
 
 if (process.env.IS_LOCALHOST !== 'true') {
-    logger.info('Running in production mode');
+    Logger.info('Running in production mode');
     
     Knex.migrate.latest()
         .then(() => {
 
             Knex.seed.run()
                 .then(() => {
-                    logger.info('Database migrated');
+                    Logger.info('Database migrated');
                     startServer();
                 })
-                .catch(logger.info);
+                .catch(Logger.info);
         })
-        .catch(logger.info);
+        .catch(Logger.info);
 
 } else {
-    logger.info('Running in development mode');
+    Logger.info('Running in development mode');
     startServer();
 }
