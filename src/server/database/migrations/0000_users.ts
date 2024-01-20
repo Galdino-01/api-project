@@ -1,5 +1,6 @@
 import type { Knex } from "knex";
 import { ETableNames } from "../ETableNames";
+import { Logger } from "../../shared/services";
 
 export async function up(knex: Knex) {
     return knex.schema.createTable(ETableNames.users, table => {
@@ -13,11 +14,11 @@ export async function up(knex: Knex) {
 
         table.comment('Tabela de usuários do sistema');
     })
-        .then(() => console.log(`Table ${ETableNames.users} created!`));
+        .then(() => Logger.info(`Table ${ETableNames.users} created!`, { route: 'database', status: 'success', params: {  }}));
 }
 
 
 export async function down(knex: Knex) {
     return knex.schema.dropTable(ETableNames.users)
-        .then(() => console.log(`Table ${ETableNames.users} dropped!`));
+        .then(() => Logger.info(`Table ${ETableNames.users} dropped!`, { route: 'database', status: 'success', params: {  }}));
 }

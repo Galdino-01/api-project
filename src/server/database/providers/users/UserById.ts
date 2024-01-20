@@ -1,6 +1,7 @@
 import { ETableNames } from "../../ETableNames";
 import { IUsuario } from "../../models";
 import { Knex } from "../../knex";
+import { Logger } from "../../../shared/services";
 
 export const UserById = async (id: number): Promise<IUsuario | Error> => {
 
@@ -15,7 +16,7 @@ export const UserById = async (id: number): Promise<IUsuario | Error> => {
         return new Error ('User not found in database');
         
     } catch (error) {
-        console.log(error);
+        Logger.info(error)
         return new Error('Error in UserById');
     }
 }

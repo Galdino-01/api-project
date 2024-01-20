@@ -1,22 +1,25 @@
+import { Logger } from "../../../shared/services";
 import { ETableNames } from "../../ETableNames";
 import { Knex } from "../../knex";
-import { IUsuario } from "../../models";
-
 
 export const SignIn = async (login: String) => {
 
     try {
         const resultUsers = await Knex(ETableNames.users)
-        .select('*')
-        .where('user_login', '=', login.toUpperCase())
-        .first();
+            .select('*')
+            .where('user_login', '=', login.toUpperCase())
+            .first();
 
-        if(resultUsers) return resultUsers;
+        if (resultUsers) {
+            Logger.info(`User found in Database`, { route: '/sign-in', status: 'success', params: { login: login } });
+            return resultUsers
+        } 
 
-        return new Error ('Login or Password incorrect');
-        
+        Logger.error(`User not found in Database`, { route: '/sign-in', status: 'error', params: { login: login } });
+        return new Error('Login or Password incorrect');
+
     } catch (error) {
-        console.log(error);
+        Logger.error(error)
         return new Error('Error in SignIn');
     }
-}
+};

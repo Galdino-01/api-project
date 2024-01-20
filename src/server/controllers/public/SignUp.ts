@@ -3,6 +3,7 @@ import { validation } from "../../shared/middlewares";
 import * as yup from 'yup';
 import { Request, Response } from "express";
 import { PublicProviders } from "../../database/providers";
+import { Logger } from "../../shared/services";
 
 interface IBodyProps {
     login: string;
@@ -23,6 +24,7 @@ export const SignUpValidation = validation((getSchema) => ({
 export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) => {
 
     const { login, password, email, name } = req.body;
+    Logger.info(`New SignUp request`, { route: '/sign-up', status: 'processing', params: { login: login }});
 
     const result = await PublicProviders.SignUp({
         login,
@@ -32,7 +34,6 @@ export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
     });
 
     if (result instanceof Error) {
-
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: {
                 default: result.message

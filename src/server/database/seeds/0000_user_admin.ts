@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 import { ETableNames } from "../ETableNames";
 import { v4 as uuidv4 } from 'uuid';
-import { PasswordCrypto } from "../../shared/services";
+import { Logger, PasswordCrypto } from "../../shared/services";
 
 export const seed = async (knex: Knex) => {
 
@@ -17,5 +17,6 @@ export const seed = async (knex: Knex) => {
         user_situation: 1
     };
 
-    await knex(ETableNames.users).insert(statesToInsert);
+    await knex(ETableNames.users).insert(statesToInsert)
+        .then(() => Logger.info(`User ADMIN created!`, { route: 'database', status: 'success', params: {  }}));
 };
