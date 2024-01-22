@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 
 // Yup
 import { Schema, ValidationError } from "yup";
+import { Logger } from "../services";
 
 type TProperty = "body" | "params" | "query" | "headers" | "cookies";
 type TAllSchemas = Record<TProperty, Schema<any>>;
@@ -12,8 +13,13 @@ type TGetAllSchemas = (getSchema: TGetSchema) => Partial<TAllSchemas>;
 type TValidation = (getAllSchemas: TGetAllSchemas) => RequestHandler;
 
 export const validation: TValidation = (getAllSchemas) => async (req, res, next) => {
-    const schemas = getAllSchemas(schema => schema);
 
+    const address = req.socket.remoteAddress || req.headers['x-forwarded-for'] || null;
+    const route = req.route.path;
+
+    Logger.info(`New request - Data validation`, { route: route, address: address });
+
+    const schemas = getAllSchemas(schema => schema);
     const errorsResult: Record<string, Record<string, string>> = {};
 
     Object.entries(schemas).forEach(([key, schema]) => {
@@ -36,11 +42,11 @@ export const validation: TValidation = (getAllSchemas) => async (req, res, next)
 
     // If there is no errors, go to next middleware
     if (Object.entries(errorsResult).length === 0) {
-
+        Logger.info(`Data validated`, { route: route, address: address });
         return next();
-        
-    } else {
 
+    } else {
+        Logger.error(`Data validation failed`, { route: route, address: address , errors: errorsResult });
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: errorsResult
         });

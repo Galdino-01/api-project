@@ -11,11 +11,9 @@ export const SignIn = async (login: String) => {
             .first();
 
         if (resultUsers) {
-            Logger.info(`User found in Database`, { route: '/sign-in', status: 'success', params: { login: login } });
             return resultUsers
         } 
 
-        Logger.error(`User not found in Database`, { route: '/sign-in', status: 'error', params: { login: login } });
         return new Error('Login or Password incorrect');
 
     } catch (error) {

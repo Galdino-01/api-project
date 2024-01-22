@@ -21,7 +21,6 @@ const currentMonth = moment().format('MM');
 const currentYear = moment().format('YYYY');
 
 export const Logger = winston.createLogger({
-    format: winston.format.json(),
     transports: (() => {
         const transports = [];
 
@@ -29,7 +28,10 @@ export const Logger = winston.createLogger({
             transports.push(new winston.transports.File({
                 filename: `${LOGS_PATH}/${currentYear}/${currentMonth}/${currentDay}/emergency.log`,
                 level: 'emerg',
-                format: winston.format.json()
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
             }));
         }
 
@@ -37,7 +39,10 @@ export const Logger = winston.createLogger({
             transports.push(new winston.transports.File({
                 filename: `${LOGS_PATH}/${currentYear}/${currentMonth}/${currentDay}/alert.log`,
                 level: 'alert',
-                format: winston.format.json()
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
             }));
         }
 
@@ -45,7 +50,10 @@ export const Logger = winston.createLogger({
             transports.push(new winston.transports.File({
                 filename: `${LOGS_PATH}/${currentYear}/${currentMonth}/${currentDay}/critical.log`,
                 level: 'crit',
-                format: winston.format.json()
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
             }));
         }
 
@@ -53,7 +61,10 @@ export const Logger = winston.createLogger({
             transports.push(new winston.transports.File({
                 filename: `${LOGS_PATH}/${currentYear}/${currentMonth}/${currentDay}/error.log`,
                 level: 'error',
-                format: winston.format.json()
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
             }));
         }
 
@@ -61,7 +72,10 @@ export const Logger = winston.createLogger({
             transports.push(new winston.transports.File({
                 filename: `${LOGS_PATH}/${currentYear}/${currentMonth}/${currentDay}/warning.log`,
                 level: 'warn',
-                format: winston.format.json()
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
             }));
         }
 
@@ -69,7 +83,10 @@ export const Logger = winston.createLogger({
             transports.push(new winston.transports.File({
                 filename: `${LOGS_PATH}/${currentYear}/${currentMonth}/${currentDay}/notice.log`,
                 level: 'notice',
-                format: winston.format.json()
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
             }));
         }
 
@@ -77,7 +94,10 @@ export const Logger = winston.createLogger({
             transports.push(new winston.transports.File({
                 filename: `${LOGS_PATH}/${currentYear}/${currentMonth}/${currentDay}/informational.log`,
                 level: 'info',
-                format: winston.format.json()
+                format: winston.format.combine(
+                    winston.format.timestamp(),
+                    winston.format.json()
+                ),
             }));
         }
 
