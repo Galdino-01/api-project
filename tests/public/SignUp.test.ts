@@ -3,13 +3,13 @@ import { StatusCodes } from 'http-status-codes';
 
 describe('Public - SignUp', () => {
 
-    it('should return 201, created', async () => {
+    it('should return 200, OK', async () => {
 
         const response = await testServer.post('/sign-up').send({
             login: 'test-jest',
             password: 'test-jest',
             name: 'test-jest',
-            email: 'test@test'
+            email: 'test@test.com.br'
         });
 
         expect(response.status).toBe(StatusCodes.CREATED);
@@ -23,7 +23,7 @@ describe('Public - SignUp', () => {
             login: 'test-jest',
             password: 'test-jest',
             name: 'test-jest',
-            email: 'test@test'
+            email: 'test@test.com.br'
         });
 
         expect(response.status).toBe(400);

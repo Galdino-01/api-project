@@ -32,5 +32,5 @@ export const UserById = async (req: Request<IParamsProps>, res: Response) => {
     };
 
     Logger.info(`Success return from UserById`, { route: '/user-by-id', status: 'success', params: { id: id, address: address }});
-    return res.status(StatusCodes.CREATED).json(result)
+    return res.status(StatusCodes.OK).json(result)
 }
