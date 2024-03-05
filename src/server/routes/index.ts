@@ -11,9 +11,9 @@ import { ensureAuthenticated } from '../shared/middlewares';
 
 // Test routes
 router.get('/', (_, res) => {
-    res.sendStatus(StatusCodes.OK).json({ message: 'Hello World!' });
+    res.sendStatus(StatusCodes.OK);
 });
-router.post('/post', (req, res) => {
+router.post('/', (req, res) => {
     res.sendStatus(StatusCodes.OK).json(req.body);
 });
 
