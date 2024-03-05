@@ -14,11 +14,11 @@ export async function up(knex: Knex) {
 
         table.comment('Tabela de usuários do sistema');
     })
-        .then(() => Logger.info(`Table ${ETableNames.users} created!`, { route: 'database', status: 'success', params: {  }}));
+        .then(() => Logger.info(`Table ${ETableNames.users} created!`, { route: 'database', status: 'success' }));
 }
 
 
 export async function down(knex: Knex) {
     return knex.schema.dropTable(ETableNames.users)
-        .then(() => Logger.info(`Table ${ETableNames.users} dropped!`, { route: 'database', status: 'success', params: {  }}));
+        .then(() => Logger.info(`Table ${ETableNames.users} dropped!`, { route: 'database', status: 'success' }));
 }

@@ -10,26 +10,30 @@ import { Logger } from './server/shared/services';
 
 const startServer = async () => {
     server.listen(PORT, () => {
-        Logger.info(`Server listening on port ${PORT}`, { route: 'server', status: 'success', params: {} });
+        Logger.info(`Server listening on port ${PORT}`, { route: 'server', status: 'success' });
     });
 };
 
 if (process.env.IS_LOCALHOST !== 'true') {
-    Logger.info('Running in production mode', { route: 'server', status: 'success', params: {} });
+    Logger.info('Running in production mode', { route: 'server', status: 'success' });
 
     Knex.migrate.latest()
         .then(() => {
 
             Knex.seed.run()
                 .then(() => {
-                    Logger.info('Database migrated', { route: 'database', status: 'success', params: {} });
+                    Logger.info('Database migrated and seeds ran successfully', { route: 'database', status: 'success' });
                     startServer();
                 })
-                .catch(Logger.error);
+                .catch((e) => {
+                    Logger.error('Database seed error', { route: 'database', status: 'error', message: e });
+                });
         })
-        .catch(Logger.error);
+        .catch((e) => {
+            Logger.error('Database migration error', { route: 'database', status: 'error', message: e });
+        });
 
 } else {
-    Logger.info('Running in development mode', { route: 'server', status: 'success', params: {} });
+    Logger.info('Running in development mode', { route: 'server', status: 'success' });
     startServer();
 }

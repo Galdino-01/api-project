@@ -6,7 +6,7 @@ import { Logger, PasswordCrypto } from "../../shared/services";
 export const seed = async (knex: Knex) => {
 
     const [{ count }] = await knex(ETableNames.users).count<[{ count: number }]>('* as count');
-    if (!Number.isInteger(count) || Number(count)> 0 ) return;
+    if (!Number.isInteger(count) || Number(count) > 0) return;
 
     const statesToInsert = {
         user_id: uuidv4(),
@@ -18,5 +18,5 @@ export const seed = async (knex: Knex) => {
     };
 
     await knex(ETableNames.users).insert(statesToInsert)
-        .then(() => Logger.info(`User ADMIN created!`, { route: 'database', status: 'success', params: {  }}));
+        .then(() => Logger.info(`User ADMIN created!`, { route: 'database', status: 'success' }));
 };

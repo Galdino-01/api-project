@@ -28,7 +28,7 @@ export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
     const address = req.socket.remoteAddress || req.headers['x-forwarded-for'] || null;
     const { login, password, email, name } = req.body;
 
-    Logger.info(`New SignUp request`, { route: '/sign-up', status: 'processing', params: { login: login, address: address } });
+    Logger.info(`New SignUp request`, { address: address, route: '/sign-up', status: 'processing', params: { login: login } });
 
     const result = await PublicProviders.SignUp({
         login,
@@ -39,7 +39,7 @@ export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
 
     if (result instanceof Error) {
 
-        Logger.error(`${result.message}`, { route: '/sign-up', status: 'error', params: { login: login, address: address } });
+        Logger.error(`${result.message}`, { address: address, route: '/sign-up', status: 'error', params: { login: login } });
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: {
                 default: result.message
@@ -47,6 +47,6 @@ export const SignUp = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
         })
     }
 
-    Logger.info(`User created in Database`, { route: '/sign-up', status: 'success', params: { login: login, address: address } });
+    Logger.info(`User created in Database`, { address: address, route: '/sign-up', status: 'success', params: { login: login } });
     return res.status(StatusCodes.CREATED).json('User created!')
 };
