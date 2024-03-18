@@ -1,5 +1,5 @@
 // Users controllers
-export * from './users';
+export * from "./users";
 
 // Public controllers
-export * from './public';
+export * from "./public";

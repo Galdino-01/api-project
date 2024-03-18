@@ -1,22 +1,23 @@
-import { Knex } from 'knex';
-import path from 'path';
+import { Knex } from "knex";
+import path from "path";
+import { Database } from "sqlite3";
 
 
 export const development: Knex.Config = {
-    client: 'sqlite3',
+    client: "sqlite3",
     useNullAsDefault: true,
     connection: {
-        filename: path.resolve(__dirname, '..', '..', '..', '..', 'database.sqlite')
+        filename: path.resolve(__dirname, "..", "..", "..", "..", "database.sqlite")
     },
     migrations : {
-        directory: path.resolve(__dirname, '..', 'migrations')
+        directory: path.resolve(__dirname, "..", "migrations")
     },
     seeds: {
-        directory: path.resolve(__dirname, '..', 'seeds')
+        directory: path.resolve(__dirname, "..", "seeds")
     },
     pool: {
-        afterCreate: (connection: any, done: Function) => {
-            connection.run('PRAGMA foreign_keys = ON');
+        afterCreate: (connection: Database, done: Function) => {
+            connection.run("PRAGMA foreign_keys = ON");
             done();
         }
     }
@@ -25,16 +26,16 @@ export const development: Knex.Config = {
 
 export const test: Knex.Config = {
     ...development,
-    connection: ':memory:',
+    connection: ":memory:",
 };
 
 export const production: Knex.Config = {
-    client: 'mysql2',
+    client: "mysql2",
     migrations : {
-        directory: path.resolve(__dirname, '..', 'migrations')
+        directory: path.resolve(__dirname, "..", "migrations")
     },
     seeds: {
-        directory: path.resolve(__dirname, '..', 'seeds')
+        directory: path.resolve(__dirname, "..", "seeds")
     },
     connection: {
         host : process.env.DB_HOST_ENV,
