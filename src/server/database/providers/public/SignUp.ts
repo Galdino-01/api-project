@@ -1,10 +1,10 @@
 import { IUsuario } from "../../models";
 import { ETableNames } from "../../ETableNames";
 import { Knex } from "../../knex";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 import { Logger, PasswordCrypto } from "../../../shared/services";
 
-export const SignUp = async (signUp: Omit<IUsuario, 'id'>): Promise<number | Error> => {
+export const SignUp = async (signUp: Omit<IUsuario, "id">): Promise<number | Error> => {
 
     const userId = uuid();
     const { name, login, email, password } = signUp;
@@ -19,25 +19,25 @@ export const SignUp = async (signUp: Omit<IUsuario, 'id'>): Promise<number | Err
             "user_email": email.toUpperCase(),
             "user_pass": userPass,
             "user_situation": 1,
+        };
+
+        const [resultUsers] = await Knex(ETableNames.users).insert(User).returning("id");
+
+        if (typeof resultUsers === "object") {
+            return resultUsers.id;
+        } else if (typeof resultUsers === "number") {
+            return resultUsers;
         }
 
-        const [resultUsers] = await Knex(ETableNames.users).insert(User).returning('id');
-
-        if (typeof resultUsers === 'object') {
-            return resultUsers.id
-        } else if (typeof resultUsers === 'number') {
-            return resultUsers
-        }
-
-        return new Error('Error to insert new user!');
+        return new Error("Error to insert new user!");
 
     } catch (error) {
         const { message } = error as Error;
 
-        if (message.includes('UNIQUE constraint failed') || message.includes('Duplicate entry')) {
-            return new Error('User already exists!')
+        if (message.includes("UNIQUE constraint failed") || message.includes("Duplicate entry")) {
+            return new Error("User already exists!");
         }
 
-        return new Error('Error in SignUp');
-    };
+        return new Error("Error in SignUp");
+    }
 };
