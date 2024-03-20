@@ -46,8 +46,9 @@ export const validation: TValidation = (getAllSchemas) => async (req, res, next)
         return next();
 
     } else {
-        Logger.error("Data validation failed", { route: route, address: address , errors: errorsResult });
+        Logger.error("Data validation failed", { route: route, address: address, data: { errorsResult } });
         return res.status(StatusCodes.BAD_REQUEST).json({
+            message: "Data Validation failed",
             errors: errorsResult
         });
     }

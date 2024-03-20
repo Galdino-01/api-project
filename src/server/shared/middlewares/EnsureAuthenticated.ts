@@ -12,9 +12,7 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
     if (!authorization) {
         Logger.error("Token not provided", { route: route, address: address });
         return res.status(StatusCodes.UNAUTHORIZED).json({
-            errors: {
-                default: "Token not provided"
-            }
+            message: "Token not provided"
         });
     }
     const [type, token] = authorization.split(" ");
@@ -22,9 +20,7 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
     if (type !== "Bearer") {
         Logger.error("Token malformatted", { route: route, address: address });
         return res.status(StatusCodes.UNAUTHORIZED).json({
-            errors: {
-                default: "Token malformatted"
-            }
+            message: "Token malformatted"
         });
     }
 
@@ -33,16 +29,12 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
     if (jwtData === "JWT_SECRET_NOT_FOUND") {
         Logger.error("JWT secret not found", { route: route, address: address });
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            errors: {
-                default: "Error while authenticating token"
-            }
+            message: "Error while authenticating token"
         });
     } else if (jwtData === "INVALID_TOKEN") {
         Logger.error("Invalid token", { route: route, address: address });
         return res.status(StatusCodes.UNAUTHORIZED).json({
-            errors: {
-                default: "Invalid token"
-            }
+            message: "Invalid token"
         });
     }
     req.headers.TokenJWT = jwtData.token.toString();

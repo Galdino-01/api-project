@@ -21,7 +21,7 @@ server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof SyntaxError) {
         return res.status(400).json({
             errors: {
-                message: err.message
+                message: "The request body could not be decoded as JSON."
             }
         });
     }

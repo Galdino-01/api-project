@@ -16,21 +16,19 @@ export const UserByIdValidation = validation((getSchema) => ({
 }));
 
 export const UserById = async (req: Request<IParamsProps>, res: Response) => {
-    
+
     const address = req.socket.remoteAddress || req.headers["x-forwarded-for"] || null;
     const id = Number(req.query.id);
-    Logger.info("New UserById request", { address: address, route: "/user-by-id", status: "processing", params: { id: id }});
-    
+    Logger.info("New UserById request", { address: address, route: "/user-by-id", status: "processing", data: { id } });
+
     const result = await UsersProviders.UserById(id);
-    if(result instanceof Error){
-        Logger.error(`${result.message}`, { address: address, route: "/user-by-id", status: "error", params: { id: id }});
+    if (result instanceof Error) {
+        Logger.error(`${result.message}`, { address: address, route: "/user-by-id", status: "error", data: { id } });
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            errors: {
-                message: result.message
-            }
+            message: result.message
         });
     }
 
-    Logger.info("Success return from UserById", { address: address, route: "/user-by-id", status: "success", params: { id: id }});
+    Logger.info("Success return from UserById", { address: address, route: "/user-by-id", status: "success", data: { id } });
     return res.status(StatusCodes.OK).json(result);
 };

@@ -22,34 +22,30 @@ export const SignIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
 
     const address = req.socket.remoteAddress || req.headers["x-forwarded-for"] || null;
     const { login, password } = req.body;
-    Logger.info("New SignIn request", { address: address, route: "/sign-in", status: "processing", params: { login: login } });
+    Logger.info("New SignIn request", { address: address, route: "/sign-in", status: "processing", data: { login: login } });
 
     const verifyLogin = await PublicProviders.SignIn(login);
     if (verifyLogin instanceof Error) {
-        Logger.error(`${verifyLogin.message}`, { address: address, route: "/sign-in", status: "error", params: { login: login } });
+        Logger.error(`${verifyLogin.message}`, { address: address, route: "/sign-in", status: "error", data: { login: login } });
         return res.status(StatusCodes.UNAUTHORIZED).json({
-            errors: {
-                message: verifyLogin.message
-            }
+            message: verifyLogin.message
         });
     }
-    Logger.info("User found in Database", { address: address, route: "/sign-in", status: "success", params: { login: login } });
+    Logger.info("User found in Database", { address: address, route: "/sign-in", status: "success", data: { login: login } });
 
     const passwordMatch = await PasswordCrypto.verifyPassword(password, verifyLogin.user_pass);
 
     if (!passwordMatch) {
-        Logger.error("Password incorrect", { address: address, route: "/sign-in", status: "error", params: { login: login } });
+        Logger.error("Password incorrect", { address: address, route: "/sign-in", status: "error", data: { login: login } });
         return res.status(StatusCodes.UNAUTHORIZED).json({
-            errors: {
-                message: "Login or Password incorrect"
-            }
+            message: "Login or Password incorrect"
         });
     }
-    Logger.info("Password correct", { address: address, route: "/sign-in", status: "success", params: { login: login } });
+    Logger.info("Password correct", { address: address, route: "/sign-in", status: "success", data: { login: login } });
 
     const token = await JWTService.sign({ token: req.body.login });
 
-    Logger.info("Token generated", { address: address, route: "/sign-in", status: "success", params: { login: login } });
+    Logger.info("Token generated", { address: address, route: "/sign-in", status: "success", data: { login: login } });
     return res.status(StatusCodes.OK).json({
         token: `Bearer ${token}`,
     });
